@@ -5,6 +5,7 @@ mod server{
         pub mod execute_command;
         pub mod remote_action;
         pub mod manage_packages;
+        pub mod upload_file;
     }
 
     pub mod misc {
@@ -22,8 +23,8 @@ use druid::widget::{Flex};
 
 use crate::server::credentials::Credentials;
 use crate::server::credentials::ServerFunctionality;
-use crate::server::server_management::session_manager::{ActionCollectionTrait, SessionManager};
-use crate::server::remote_actions::remote_action::RemoteAction;
+use crate::server::server_management::session_manager::{SessionManager};
+use crate::server::remote_actions::remote_action::{RemoteAction, RemoteActionEnum};
 //use crate::server::server_management::session_manager::execute_command;
 //use crate::server::remote_actions::manage_packages::{AddPackage, RemovePackage};
 
@@ -70,9 +71,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //let test2 = AddPackage {package_name: "unzip".to_string() };
 
     let last_action_collection = last_session.request_new_collection();
-    last_action_collection.new_action::<ExecuteCommand>();
+    //last_action_collection.new_action::<ExecuteCommand>();
+    last_action_collection.actions.push(RemoteActionEnum::ExecuteCommand(ExecuteCommand{command: "ls".to_string(), sudo: false}));
+
     unsafe {
-        //let test =  last_action_collection.actions.last_mut().unwrap();
         last_action_collection.actions.last_mut().unwrap().execute(&(*last_action_collection.session_manager_owner).session);
     }
     //let new_action_collection = ActionCollection { actions: Vec::new(), session_manager_owner: last_session };

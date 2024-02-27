@@ -1,11 +1,11 @@
 use ssh2::Session;
 use crate::server::{credentials::Credentials, remote_actions::{execute_command::ExecuteCommand, remote_action::RemoteErrorTrait}};
 use std::{error::Error, fs::File, vec, io::{self, BufRead, BufReader, Read, Write}, path::Path};
-use crate::server::remote_actions::remote_action::RemoteAction;
+use crate::server::remote_actions::remote_action::{RemoteAction, RemoteActionEnum};
 use crate::server::misc::class::Class;
 
 pub struct ActionCollection {
-    pub actions: Vec<Box<dyn RemoteAction>>,
+    pub actions: Vec<RemoteActionEnum>,
     pub session_manager_owner: *const SessionManager
 }
 
@@ -36,15 +36,20 @@ impl SessionManagerTrait for SessionManager {
     }
 }
 
+/*
+macro_rules! generate_action {
+    ($type: ty) => {
+        RemoteActionEnum::<$type>
+    };
+}
 
 pub trait ActionCollectionTrait {
-    fn new_action<Type: Class + RemoteAction + 'static>(&mut self);//-> &'a mut Type;
+    fn new_action<Type: Class + RemoteAction + 'static>(&mut self);
 }
-
 impl ActionCollectionTrait for ActionCollection {
-    fn new_action<Type: Class + RemoteAction + 'static>(&mut self) {
-        self.actions.push(Box::new(Type::new()));
+    fn new_action<Type: Class + RemoteAction + 'static>(&mut self){
 
-       // return self.actions.last_mut().unwrap();
+        self.actions.push(generate_action!(Type)(Type::new()));
     }
 }
+*/

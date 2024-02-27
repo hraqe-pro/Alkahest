@@ -72,10 +72,6 @@ impl<'a> RemoteAction for AddPackage {
         };   
          */
     }
-
-    fn who_am_i(&self) {
-
-    }
 }
 
 impl<'a> RemoteAction for RemovePackage {
@@ -109,9 +105,5 @@ impl<'a> RemoteAction for RemovePackage {
             }
         };  
          */ 
-    }
-
-    fn who_am_i(&self) {
-
     }
 }

@@ -53,10 +53,6 @@ impl RemoteAction for ExecuteCommand {
         };   
     }
 
-    fn who_am_i(&self) {
-
-    }
-
     /*
     fn get_owner(&self) -> &ActionCollection {
         
