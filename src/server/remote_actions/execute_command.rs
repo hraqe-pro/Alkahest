@@ -1,10 +1,10 @@
 use std::{error::{self, Error}, fs::File, io::{self, BufRead, BufReader, Read, Write}, path::Path};
 use druid::piet::TextStorage;
-use crate::server::remote_actions::remote_action::RemoteAction;
+use crate::server::remote_actions::remote_action::Action;
 use ssh2::Session;
 use thiserror::Error;
 use crate::server::misc::class::Class;
-use crate::server::server_management::session_manager::ActionCollection;
+use crate::server::server_management::action_collection;
 
 use super::remote_action::RemoteErrorTrait;
 
@@ -22,7 +22,7 @@ pub struct ExecuteCommand {
     pub sudo: bool 
 }
 
-impl RemoteAction for ExecuteCommand {
+impl Action for ExecuteCommand {
     fn execute(&self, session: &Session) {
         
         let try_execute = || -> Result<(), ExecuteCommandError> {

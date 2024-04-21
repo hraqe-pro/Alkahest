@@ -1,5 +1,5 @@
 use std::{error::Error, fs::File, io::{self, BufRead, BufReader, Read, Write}, path::Path, path::PathBuf};
-use crate::server::remote_actions::remote_action::RemoteAction;
+use crate::server::remote_actions::remote_action::Action;
 use ssh2::Session;
 use thiserror::Error;
 
@@ -17,7 +17,7 @@ pub struct UploadFile {
     pub destination: PathBuf
 }
 
-impl RemoteAction for UploadFile {
+impl Action for UploadFile {
     fn execute(&self, session: &Session) {
 
         let try_execute = || -> Result<(), FileUploadError> {
@@ -35,13 +35,13 @@ impl RemoteAction for UploadFile {
 
         match try_execute() {
             Ok(()) => {
-
+                println!("File uploaded");
             }
             Err(FileUploadError::FileOpen(e)) => {
-                
+                println!("Couldn't open the file");
             }
             Err(FileUploadError::SCPSend(e)) => {
-                
+                println!("Couldn't send the file");
             }
         };   
     }

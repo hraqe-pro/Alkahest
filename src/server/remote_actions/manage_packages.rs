@@ -1,8 +1,8 @@
 use std::{error::Error, fs::File, io::{self, BufRead, BufReader, Read, Write}, path::Path};
-use crate::server::{remote_actions::remote_action::RemoteAction, server_management::session_manager::{SessionManager, SessionManagerTrait}};
+use crate::server::{remote_actions::remote_action::Action, server_management::session_manager::{SessionManager, SessionManagerTrait}};
 use ssh2::Session;
 use thiserror::Error;
-use crate::server::server_management::session_manager::ActionCollection;
+use crate::server::server_management::action_collection;
 
 use super::remote_action::RemoteErrorTrait;
 
@@ -40,7 +40,7 @@ pub struct RemovePackage {
     pub package_name: String,
 }
 
-impl<'a> RemoteAction for AddPackage {
+impl<'a> Action for AddPackage {
     fn execute(&self, session: &Session) {
 
         /*
@@ -74,7 +74,7 @@ impl<'a> RemoteAction for AddPackage {
     }
 }
 
-impl<'a> RemoteAction for RemovePackage {
+impl<'a> Action for RemovePackage {
     fn execute(&self, session: &Session) {
     
         /*
