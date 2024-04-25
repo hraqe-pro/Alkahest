@@ -1,7 +1,8 @@
-use std::{error::Error, fs::File, io::{self, BufRead, BufReader, Read, Write}, path::Path, path::PathBuf};
+use std::{error::Error, fs, fs::File, io::{self, BufRead, BufReader, Read, Write}, path::Path, path::PathBuf};
 use crate::server::remote_actions::remote_action::Action;
 use ssh2::Session;
 use thiserror::Error;
+use crate::server::server_management::session_manager::SessionManager;
 
 #[derive(Error, Debug)]
 pub enum FileUploadError {
@@ -18,17 +19,28 @@ pub struct UploadFile {
 }
 
 impl Action for UploadFile {
-    fn execute(&self, session: &Session) {
+    fn execute(&self, session: &SessionManager) {
 
         let try_execute = || -> Result<(), FileUploadError> {
-            let file = File::open(&self.source)?;
-            let mut buf_reader = BufReader::new(file);
+            let file_bytes = fs::read(&self.source)?;
 
-            let data = buf_reader.fill_buf()?;
-            let size = data.len() as u64;
+            let size = file_bytes.len() as u64;
 
-            let mut remote_file = session.scp_send(&self.destination, 0o644, size, None)?;
-            remote_file.write(data)?;
+            println!("file size2: {}", size);
+
+            println!("file try: {} :: {}", &self.source.display(), self.destination.display());
+
+            let mut remote_file = session.session.scp_send(&self.destination, 0o644, size, None)?;
+
+
+            println!("file size3: {}", file_bytes.as_slice().len());
+
+            remote_file.write_all(file_bytes.as_slice())?;
+
+            remote_file.send_eof().unwrap();
+            remote_file.wait_eof().unwrap();
+            remote_file.close().unwrap();
+            remote_file.wait_close().unwrap();
 
             Ok(())
         };

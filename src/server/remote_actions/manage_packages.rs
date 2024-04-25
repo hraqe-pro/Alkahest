@@ -41,7 +41,7 @@ pub struct RemovePackage {
 }
 
 impl<'a> Action for AddPackage {
-    fn execute(&self, session: &Session) {
+    fn execute(&self, session: &SessionManager) {
 
         /*
         let try_execute = || -> Result<(), AddPackageError> {
@@ -75,7 +75,7 @@ impl<'a> Action for AddPackage {
 }
 
 impl<'a> Action for RemovePackage {
-    fn execute(&self, session: &Session) {
+    fn execute(&self, session: &SessionManager) {
     
         /*
         let try_execute = || -> Result<(), AddPackageError> {

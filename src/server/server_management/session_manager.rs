@@ -7,7 +7,7 @@ use crate::server::server_management::action_collection::ActionCollection;
 
 
 pub struct SessionManager {
-    credentials: Credentials,
+    pub credentials: Credentials,
     pub session: Session,
 }
 
@@ -29,7 +29,7 @@ impl SessionManagerTrait for SessionManager {
 
     fn execute_collection(&self, collection: &ActionCollection) {
         for action in &collection.actions {
-            action.execute(&self.session);
+            action.execute(&self);
         }
     }
 }
