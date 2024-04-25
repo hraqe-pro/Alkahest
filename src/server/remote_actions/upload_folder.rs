@@ -40,7 +40,7 @@ trait UploadFolderTrait {
                 };
 
                 let set_persmissons = ExecuteCommand {
-                    command: format!("chmod 777 {}", last_child_copy.display().to_string().replace("\\", "/")),
+                    command: format!("chmod 777 \"{}\"", last_child_copy.display().to_string().replace("\\", "/")),
                     execution_location: PathBuf::from("~"),
                     sudo: true
                 };

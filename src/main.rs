@@ -202,7 +202,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         source: PathBuf::from("/var/www/Wstructural/dist/client/assets/dyn_assets/Five/Zrzut_1.png")
     }));
     */
-     
+
 
 
 
